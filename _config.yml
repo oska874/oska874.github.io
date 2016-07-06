@@ -6,7 +6,7 @@
 # 'jekyll serve'. If you change this file, please restart the server process.
 
 # Site settings
-title: Ezio's Blog
+title: Ezio's Notes
 email: ezio_zhang@outlook.com
 description: > # this means to ignore newlines until "baseurl:"
   AOSP , Python , uboot , linux , RTOS , lwip , AMP , PowerPC , ARM
@@ -16,11 +16,32 @@ twitter_username: oska874
 github_username:  oska874
 
 # Build settings
-markdown: kramdown
 
-kramdown:
-  input: GFM
 
-timezone: UTC+8
+highlighter: pygments
+markdown: redcarpet
+redcarpet:
+  extensions:
+     - fenced_code_blocks
+     - no_intra_emphasis
+     - strikethrough
+     - autolink
+     - tables
+
+#markdown: kramdown
+
+#kramdown:
+#  input: GFM
+#  auto_ids:      true
+#  auto_id_prefix: 'id-'
+
 encoding: utf-8
 
+excerpt_separator: "\n\n"
+
+defaults:
+  -
+    scope:
+      path: "_posts/"
+    values:
+      layout: "post" 
