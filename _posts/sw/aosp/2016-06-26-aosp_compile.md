@@ -1,5 +1,6 @@
 ---
-tags : android
+categories : android
+tags : aosp
 ---
 
 AOSP 开发流程
