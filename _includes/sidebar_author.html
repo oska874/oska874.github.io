@@ -1,0 +1,20 @@
+<div class="panel panel-pithy author">
+    <div class="panel-heading avastar">
+        <img src="{{site.author.avatar}}" alt="{{site.author.name}}"/>
+    </div>
+    <div class="panel-body">
+        {{site.author.motto}}
+    </div>
+    <div class="panel-footer social">
+        <ul>
+            {% for social in site.socials%}
+            <li>
+                <a href="{{ social.url }}" target="_blank"><i class="fa fa-{{social.icon}}"></i></a>
+            </li>
+            {% endfor %}
+            <li>
+                <a href="{{ site.rss.path | prepend: site.baseurl | prepend: site.url }}" target="_blank"><i class="fa fa-{{site.rss.icon}}"></i></a>
+            </li>
+        </ul>
+    </div>
+</div>

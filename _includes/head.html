@@ -1,0 +1,24 @@
+<head>
+    <title>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta name="keywords" content="{{ page.title }},{% for category in page.categories %}{{ category }},{% endfor %} {% for tag in page.tags %}{{ tag }},{% endfor %},{{ site.keywords }}" />
+    <meta name="description" content="{{ page.title }}, {% for category in page.categories %}{{ category }},{% endfor %} {% for tag in page.tags %}{{ tag }},{% endfor %} {% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}" />
+
+    <link rel="shortcut icon" href="{{ site.baseurl }}/assets/favicon.ico" type="image/x-icon" />
+
+  <!--Font awesome-->
+  <link href="{{ site.baseurl}}/assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+  <!-- The pithy main css -->
+  <link rel="stylesheet" href="{{ site.baseurl}}/assets/stylesheet/pithy.css">
+
+
+  <!--[if lt IE 9]>
+  <script src="https://cdn.bootcss.com/html5shiv/3.7.2/html5shiv-printshiv.js"></script>
+  <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.js"></script>
+  <![endif]-->
+  <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ site.rss.path | prepend: site.baseurl | prepend: site.url }}" />
+</head>

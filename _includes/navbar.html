@@ -1,0 +1,23 @@
+<nav class="navbar navbar-pithy" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button aria-expanded="false" class="navbar-toggle collapsed" data-target="#pithy-navbar" data-toggle="collapse" type="button">
+                <i class="fa fa-bars"></i>
+            </button>
+            <a class="navbar-brand" href="{{site.baseurl}}/">Guovz</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="pithy-navbar">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="{{site.baseurl}}/">{{ 'menu.home' | translate }}</a>
+                </li>
+                <li class="active">
+                    <a href="{{site.baseurl}}/about/">{{ 'menu.about' | translate }}</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
