@@ -140,4 +140,4 @@ defaults:
     scope:
       path: ""
     values: 
-      layout: "post"
+      layout: "page"

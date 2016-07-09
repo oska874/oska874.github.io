@@ -1,5 +1,9 @@
 require 'i18n'
 
+I18n.config.available_locales = :en
+
+#LOCALE = :en
+
 # Create folder "_locales" and put some locale file from https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale
 module Jekyll
   module I18nFilter
@@ -18,6 +22,7 @@ module Jekyll
     def translate(input)
         I18n.load_path += Dir[File.join(File.dirname(__FILE__),'../_locales/*.yml')]
         I18n.locale = @context.registers[:site].config['locale']
+      # I18n.locale = LOCALE
         I18n.t input
     end
   end
