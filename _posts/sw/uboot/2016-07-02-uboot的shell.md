@@ -1,5 +1,6 @@
 ---
 tags : u-boot 
+category : [ 源码 ]
 ---
 
 uboot shell 命令

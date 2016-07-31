@@ -1,10 +1,7 @@
 ---
-categories : tool
 tags : vagrant 
+category : [ 说明 ]
 ---
-
-vagrant 创建 box 文件
-===
 
 0. 先安装virtualbox，再装ubuntu（其他发行版也可以，习惯问题），注意，资源分配足够（内存、cpu）
       略
