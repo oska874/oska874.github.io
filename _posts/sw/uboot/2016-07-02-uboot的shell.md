@@ -3,9 +3,6 @@ tags : u-boot
 category : [ 源码 ]
 ---
 
-uboot shell 命令
-=================
-
 ## 4. uboot shell 命令的实现
 
 ### 4.1. 添加命令

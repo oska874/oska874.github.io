@@ -1,6 +1,6 @@
 ---
 tags : [ Python ]
-category : 翻译
+category : [ 翻译 ]
 ---
 
 Python 101: urllib 简介
