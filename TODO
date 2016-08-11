@@ -16,7 +16,9 @@ TODO List
 
 2016.8.9
 
-1. [] linux schedule (translate & summarize)
+1. [x] linux schedule (translate & summarize)
 2. [] jiffies cfg
 3. [] x11 over ssh
+4. [] linux netstack pub In batches
+5. [] linux multiply io
 
