@@ -18,7 +18,7 @@ TODO List
 
 1. [x] linux schedule (translate & summarize)
 2. [] jiffies cfg
-3. [] x11 over ssh
+3. [X] x11 over ssh
 4. [] linux netstack pub In batches
 5. [] linux multiply io
 
