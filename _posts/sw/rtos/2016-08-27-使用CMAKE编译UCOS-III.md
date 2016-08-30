@@ -166,8 +166,11 @@ AUX_SOURCE_DIRECTORY(./Examples/POSIX/GNU/OS3 LIBSIM_SRC)
   ```
 ADD_EXECUTABLE(${TARGET_EXE_Z} ${LIBSIM_SRC})  #生成可执行文件
 TARGET_LINK_LIBRARIES(${TARGET_EXE_Z} libos1)  #链接库文件
+TARGET_LINK_LIBRARIES(${TARGET_EXE_Z} pthread)
 ...
   ```
+  
+  注意一点，在 Linux 上运行 ucos 要用到 pthread 库，所以一定要将 pthread 添加到链接库中。
 
 - 第三步，编译 uCOS。
   直接在代码目录使用 cmake 编译的话会生成很多临时文件，不好清理，cmake 官方也没提供有效的办法清理这些临时文件，所以需要使用源码外编译（out of source builds）。在根目录创建一个 `build` 目录，然后在该目录下执行 `cmake ..` 即可完成编译，之后只要删除了该目录就可以清理全部临时文件了，而我的则编写了一个简单脚本 `build.sh` 来执行编译：
@@ -179,7 +182,7 @@ cmake ..
 make VERBOSE=0
   ```
 
-  最后，执行脚本 `sh build.sh` 就可以完成编译了，会在 `build` 目录下生成 `ucos` 可执行文件(注：我使用的这个版本并不运行在开发板上，而是在 Linux 上运行的的一个仿真器，对操作系统来说就是一个特殊点的 ELF 可执行文件。)。
+  最后，执行脚本 `sh build.sh` 就可以完成编译了，会在 `build` 目录下生成 `ucos` 可执行文件(注：我使用的这个版本并不运行在开发板上，而是在 Linux 上运行的的一个仿真器，对操作系统来说就是一个特殊点的 ELF 可执行文件。)。运行 ucos 要注意，因为需要将 RTPRIO 设置为 unlimited ，所以需要在 root 用户下运行 `ulimit -r unlimited` 解除限制，然后再执行 ucos `./build/ucos` 。
 
 
 [1]: https://www.micrium.com/download/micrium_posix/
