@@ -9,7 +9,7 @@ comments: false
 
 ### About Me
 
-嗨，我是 Ezio ， 嵌入式软件工程师， 13 届[西安电子科技大学](http://www.xidian.edu.cn/)计算机应用技术硕士，本科母校是[关中农民讲习所](http://www.nwu.edu.cn/)，base 北京/西安。现就职[中国自动化集团](www.cag.com.hk)，作为一名根正苗红的 CS 毕业生，已经在工业自动化领域奋斗了 5 年之久。专注于底层软件开发，从简陋的 RTOS 到复杂的 Linux ， 从设备驱动到网络协议栈都研究过，此外还是一名专职的业余 Linux 系统运维。
+嗨，我是 Ezio ， 嵌入式软件工程师， 专注于嵌入式底层软件开发，从简陋的 RTOS 到复杂的 Linux ， 从设备驱动到网络协议栈都研究过，等等。
 
 ### Projects
 
