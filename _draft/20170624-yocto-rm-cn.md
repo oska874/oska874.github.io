@@ -70,49 +70,66 @@ For task-based information using the Yocto Project, see the [Yocto Project Deve
 
 基于任务使用Yocto 的信息可以参考 [Yocto Project Development Manual][4157] 和 [Yocto Project Linux Kernel Development Manual][4158]。 BSP 结构相关的信息可以参考[Yocto Project Board Support Package (BSP) Developer's Guide][4159]。 关于如何 SDK 的信息可以参考[Yocto Project Software Development Kit (SDK) Developer's Guide][4160]。你可以在 [Yocto Project Profiling and Tracing Manual][4161] 中找到关于跟踪和调优的信息。关于OpenEmbedded 构建系统使用的任务执行工具 Bitbake 的信息可以参考 [BitBake User Manual][4162]。最后，你也可以在[Yocto Project website][4163] 上找到大量关于 Yocto 项目的信息。
 
-### 1.2. Documentation Overview[¶][763]
+### 1.2. 文档全览[¶][763]
 
 This reference manual consists of the following:
 
+这篇参考手册包括一下内容：
+
 *   _[Using the Yocto Project][387]:_  Provides an overview of the components that make up the Yocto Project followed by information about debugging images created in the Yocto Project.
+*   _[使用Yocto][387]:_ 提供构成 Yocto 项目的组件的综述，随后是关于调试 Yocto 创建的镜像的信息。
 
 *   _[A Closer Look at the Yocto Project Development Environment][388]:_  Provides a more detailed look at the Yocto Project development environment within the context of development.
+*   _[进一步探寻 Yocto 项目的开发环境][388]:_ 通过开发上下文提供关于 Yocto 项目开发环境的更详细的介绍。
 
 *   _[Technical Details][389]:_  Describes fundamental Yocto Project components as well as an explanation behind how the Yocto Project uses shared state (sstate) cache to speed build time.
+*   _[技术细节][389]:_ 描述 Yocto 项目基础组件，同时作为说明在 Yocto 之后使用共享状态（sstate）缓存如何提高构建速度。
 
 *   _[Migrating to a Newer Yocto Project Release][390]:_  Describes release-specific information that helps you move from one Yocto Project Release to another.
+*   _[迁移到新版 Yocto 项目][390]:_ 描述发行版相关的信息，帮助你从一个 Yocto 发行版升级到其他版本。
 
 *   _[Directory Structure][391]:_  Describes the [Source Directory][1808] created either by unpacking a released Yocto Project tarball on your host development system, or by cloning the upstream [Poky][1809] Git repository.
+*   _[目录结构][391]:_ 描述通过在你的开发系统上解压 Yocto 项目压缩包或者克隆上游 [Poky][1809] Git 仓库得到的[源码目录结构][1808]。
 
 *   _[Classes][392]:_  Describes the classes used in the Yocto Project.
+*   _[类][392]:_ 描述 Yocto 项目中使用的类（classes）。
 
 *   _[Tasks][393]:_  Describes the tasks defined by the OpenEmbedded build system.
+*   _[任务][393]:_ 描述 OpenEmbedded 构建系统定义的各种任务。
 
 *   _[`devtool` Quick Reference][394]:_  Provides a quick reference for the `devtool` command.
+*   _[`devtool` 快速参考][394]:_ 提供关于 `devtool` 命令的快速参考。
 
 *   _[QA Error and Warning Messages][395]:_  Lists and describes QA warning and error messages.
+*   _[QA 错误和警告信息][395]:_ 列出并描述 QA 警告和错误信息。
 
 *   _[Images][396]:_  Describes the standard images that the Yocto Project supports.
+*   _[镜像][396]:_  描述 Yocto 项目支持的标准镜像。
 
 *   _[Features][397]:_  Describes mechanisms for creating distribution, machine, and image features during the build process using the OpenEmbedded build system.
+*   _[特性][397]:_ 描述 OpenEmbedded 构建系统创建发行版，机器和镜像特性的机制。
 
 *   _[Variables Glossary][398]:_  Presents most variables used by the OpenEmbedded build system, which uses BitBake. Entries describe the function of the variable and how to apply them.
+*   _[变量术语表][398:_ 展示 OpenEmbedded 构建系统 BitBake 使用的大部分变量。表项描述了变量的功能，以及是如何应用它们的。
 
 *   _[Variable Context][399]:_  Provides variable locality or context.
+*   _[上下文变量][399]:_ 提供本地或上下文变量。
 
 *   _[FAQ][400]:_  Provides answers for commonly asked questions in the Yocto Project development environment.
+*   _[FAQ][400]:_ Yocto 项目开发环境常见问题。
 
 *   _[Contributing to the Yocto Project][401]:_  Provides guidance on how you can contribute back to the Yocto Project.
+*   _[参加贡献 Yocto 项目][401]:_ 如何回馈 Yocto 项目的指南。
 
-### 1.3. System Requirements[¶][764]
+### 1.3. 系统需求[¶][764]
 
 For general Yocto Project system requirements, see the "[Setting Up to Use the Yocto Project][4164]" section in the Yocto Project Quick Start. The remainder of this section provides details on system requirements not covered in the Yocto Project Quick Start.
 
-### 1.3.1. Supported Linux Distributions[¶][402]
+### 1.3.1. 支持的 Linux 发行版 [¶][402]
 
 Currently, the Yocto Project is supported on the following distributions:
 
-### Note
+### 笔记
 
 Yocto Project releases are tested against the stable Linux distributions in the following list. The Yocto Project should work on other distributions but validation is not performed against them.
 
@@ -144,15 +161,15 @@ If you encounter problems, please go to [Yocto Project Bugzilla][3434] and sub
 
 *   openSUSE 42.1
 
-### Note
+### 笔记
 
 While the Yocto Project Team attempts to ensure all Yocto Project releases are one hundred percent compatible with each officially supported Linux distribution, instances might exist where you encounter a problem while using the Yocto Project on a specific distribution.
 
-### 1.3.2. Required Packages for the Host Development System[¶][403]
+### 1.3.2. 主机开发环境需要的包[¶][403]
 
 The list of packages you need on the host development system can be large when covering all build scenarios using the Yocto Project. This section provides required packages according to Linux distribution and function.
 
-#### 1.3.2.1. Ubuntu and Debian[¶][16]
+#### 1.3.2.1. Ubuntu 和 Debian[¶][16]
 
 The following list shows the required packages by function given a supported Ubuntu or Debian Linux distribution:
 
@@ -313,7 +330,7 @@ For CentOS 6.x, some of the versions of the components provided by the distribut
 
     ```
 
-### 1.3.3. Required Git, tar, and Python Versions[¶][404]
+### 1.3.3.要求的 Git, tar, and Python 版本[¶][404]
 
 In order to use the build system, your host development system must meet the following version requirements for Git, tar, and Python:
 
@@ -325,7 +342,7 @@ In order to use the build system, your host development system must meet the fol
 
 If your host development system does not meet all these requirements, you can resolve this by installing a `buildtools` tarball that contains these tools. You can get the tarball one of two ways: download a pre-built tarball or use BitBake to build the tarball.
 
-#### 1.3.3.1. Downloading a Pre-Built `buildtools` Tarball[¶][20]
+#### 1.3.3.1. 下载构件好的 `buildtools` 压缩包[¶][20]
 
 Downloading and running a pre-built buildtools installer is the easiest of the two methods by which you can get these tools:
 
@@ -356,7 +373,7 @@ Downloading and running a pre-built buildtools installer is the easiest of the t
 
     After you have sourced the setup script, the tools are added to `PATH` and any other environment variables required to run the tools are initialized. The results are working versions versions of Git, tar, Python and `chrpath`.
 
-#### 1.3.3.2. Building Your Own `buildtools` Tarball[¶][21]
+#### 1.3.3.2. 构建自己的 `buildtools`软件包[¶][21]
 
 Building and running your own buildtools installer applies only when you have a build host that can already run BitBake. In this case, you use that machine to build the `.sh` file and then take steps to transfer and run it on a machine that does not meet the minimal Git, tar, and Python requirements.
 
@@ -404,7 +421,7 @@ Here are the steps to take to build and run your own buildtools installer:
 
     After you have sourced the setup script, the tools are added to `PATH` and any other environment variables required to run the tools are initialized. The results are working versions versions of Git, tar, Python and `chrpath`.
 
-### 1.4. Obtaining the Yocto Project[¶][765]
+### 1.4. 获取 Yocto Project[¶][765]
 
 The Yocto Project development team makes the Yocto Project available through a number of methods:
 
@@ -420,87 +437,18 @@ The Yocto Project development team makes the Yocto Project available through a n
 
 Development using the Yocto Project requires a local [Source Directory][4165]. You can set up the Source Directory by cloning a copy of the upstream [poky][4166] Git repository. For information on how to do this, see the "[Getting Set Up][4167]" section in the Yocto Project Development Manual.
 
-### Chapter 2. Using the Yocto Project[¶][1815]
-
-**Table of Contents**
-
-<dl style="padding: 0em; margin: 0em 0em 0.5em;">
-
-<dt style="margin: 0em; padding: 0em;">[2.1\. Running a Build][3436]</dt>
-
-<dd style="margin: 0em 0em 0em 2.6em; padding: 0em;">
-
-<dl style="padding: 0em; margin: 0em 0em 0.5em;">
-
-<dt style="margin: 0em; padding: 0em;">[2.1.1\. Build Overview][767]</dt>
-
-<dt style="margin: 0em; padding: 0em;">[2.1.2\. Building an Image Using GPL Components][768]</dt>
-
-</dl>
-
-</dd>
-
-<dt style="margin: 0em; padding: 0em;">[2.2\. Installing and Using the Result][3437]</dt>
-
-<dt style="margin: 0em; padding: 0em;">[2.3\. Debugging Tools and Techniques][3438]</dt>
-
-<dd style="margin: 0em 0em 0em 2.6em; padding: 0em;">
-
-<dl style="padding: 0em; margin: 0em 0em 0.5em;">
-
-<dt style="margin: 0em; padding: 0em;">[2.3.1\. Viewing Logs from Failed Tasks][769]</dt>
-
-<dt style="margin: 0em; padding: 0em;">[2.3.2\. Viewing Variable Values][770]</dt>
-
-<dt style="margin: 0em; padding: 0em;">[2.3.3\. Viewing Package Information with `oe-pkgdata-util`][771]</dt>
-
-<dt style="margin: 0em; padding: 0em;">[2.3.4\. Viewing Dependencies Between Recipes and Tasks][772]</dt>
-
-<dt style="margin: 0em; padding: 0em;">[2.3.5\. Viewing Task Variable Dependencies][773]</dt>
-
-<dt style="margin: 0em; padding: 0em;">[2.3.6\. Running Specific Tasks][774]</dt>
-
-<dt style="margin: 0em; padding: 0em;">[2.3.7\. General BitBake Problems][775]</dt>
-
-<dt style="margin: 0em; padding: 0em;">[2.3.8\. Development Host System Issues][776]</dt>
-
-<dt style="margin: 0em; padding: 0em;">[2.3.9\. Building with No Dependencies][777]</dt>
-
-<dt style="margin: 0em; padding: 0em;">[2.3.10\. Recipe Logging Mechanisms][778]</dt>
-
-<dt style="margin: 0em; padding: 0em;">[2.3.11\. Other Tips][779]</dt>
-
-</dl>
-
-</dd>
-
-<dt style="margin: 0em; padding: 0em;">[2.4\. Maintaining Build Output Quality][3439]</dt>
-
-<dd style="margin: 0em 0em 0em 2.6em; padding: 0em;">
-
-<dl style="padding: 0em; margin: 0em 0em 0.5em;">
-
-<dt style="margin: 0em; padding: 0em;">[2.4.1\. Enabling and Disabling Build History][780]</dt>
-
-<dt style="margin: 0em; padding: 0em;">[2.4.2\. Understanding What the Build History Contains][781]</dt>
-
-</dl>
-
-</dd>
-
-<dt style="margin: 0em; padding: 0em;">[2.5\. Speeding Up the Build][3440]</dt>
-
-</dl>
+### Chapter 2. 使用 Yocto 项目[¶][1815]
 
 This chapter describes common usage for the Yocto Project. The information is introductory in nature as other manuals in the Yocto Project documentation set provide more details on how to use the Yocto Project.
 
-### 2.1. Running a Build[¶][782]
+### 2.1. 运行构建[¶][782]
 
 This section provides a summary of the build process and provides information for less obvious aspects of the build process. For general information on how to build an image using the OpenEmbedded build system, see the "[Building Images][4168]" section of the Yocto Project Quick Start.
 
-### 2.1.1. Build Overview[¶][410]
+### 2.1.1. 构建全览[¶][410]
 
 In the development environment you will need to build an image whenever you change hardware support, add or change system libraries, or add or change services that have dependencies.
+在开发环境中你将需要
 
 ![](https://www.yoctoproject.org/docs/current/ref-manual/figures/building-an-image.png)
 
