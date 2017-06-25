@@ -553,23 +553,35 @@ In addition to variable values, the output of the `bitbake -e` and `bitbake -
 
 You can use the `oe-pkgdata-util` command-line utility to query [`PKGDATA_DIR`][3752] and display various package-related information. When you use the utility, you must use it to view information on packages that have already been built.
 
+你可以使用 `oe-pkgdata-util` 命令行工具查询 [`PKGDATA_DIR`][3752] 并显示各种和软件包相关的信息。当你使用这个工具，你必须使用它查看已经构件号的软件包的信息。
+
 Following are a few of the available `oe-pkgdata-util` subcommands.
+
+下面是 `oe-pkgdata-util` 几个可用的子命令
 
 ### Note
 
 You can use the standard * and ? globbing wildcards as part of package names and paths.
+你可以使用标准的 * 和 ？ 通配符作为包名称和路径的一部分
 
 *   `oe-pkgdata-util list-pkgs [` _`pattern`_ `]`: Lists all packages that have been built, optionally limiting the match to packages that match  _`pattern`_ .
+*   `oe-pkgdata-util list-pkg  [` _`pattern`_ `]`： 列出所有已经构建好的软件包，可以限制匹配 _`pattern`_ 模式。
 
 *   `oe-pkgdata-util list-pkg-files ` _`package`_ ` ...`: Lists the files and directories contained in the given packages.
+*   `oe-pkgdata-util list-pkg-files ` _`package`_ ` ...`：练出软件包包含的文件和目录。
 
     ### Note
 
     A different way to view the contents of a package is to look at the `${`[`WORKDIR`][415]`}/packages-split` directory of the recipe that generates the package. This directory is created by the [`do_package`][416] task and has one subdirectory for each package the recipe generates, which contains the files stored in that package.
+    另一个不同的查看软件包内容的方法是直接检查 `${`[`WORKDIR`][415]`}/packages-split` 目录，这里面都是生成软件包的配方脚本。这个目录是 [`do_package`][416] 任务穿件的，并且由这个脚本生成的每个软件包都有一个对应的子目录，保存的是软件包内的文件。
 
     If you want to inspect the `${WORKDIR}/packages-split` directory, make sure that [`rm_work`][417] is not enabled when you build the recipe.
 
+    如果你想检查目录  `${WORKDIR}/packages-split` ，请确定在你构建时 [`rm_work`][417] 是关闭的。
+
 *   `oe-pkgdata-util find-path ` _`path`_ ` ...`: Lists the names of the packages that contain the given paths. For example, the following tells us that`/usr/share/man/man1/make.1` is contained in the `make-doc` package:
+*    `oe-pkgdata-util find-path ` _`path`_ ` ...`： 列出包含给定路径的软件包。举个例子，下面信息告诉我们 `man-doc` 包含了 `/usr/share/man/man1/make.1`。
+
 
     ```
          $ oe-pkgdata-util find-path /usr/share/man/man1/make.1
@@ -578,8 +590,10 @@ You can use the standard * and ? globbing wildcards as part of package names and
     ```
 
 *   `oe-pkgdata-util lookup-recipe ` _`package`_ ` ...`: Lists the name of the recipes that produce the given packages.
+*   `oe-pkgdata-util lookup-recipe ` _`package`_ ` ...`： 列出生成指定软件包的脚本名。
 
 For more information on the `oe-pkgdata-util` command, use the help facility:
+关于命令 `oe-pkgdata-util` 的更多信息可以使用 help 组件获取：
 
 ```
      $ oe-pkgdata-util ‐‐help
@@ -587,11 +601,13 @@ For more information on the `oe-pkgdata-util` command, use the help facility:
 
 ```
 
-### 2.3.4. Viewing Dependencies Between Recipes and Tasks[¶][418]
+### 2.3.4. 查看任务和脚本之间的依赖关系[¶][418]
 
 Sometimes it can be hard to see why BitBake wants to build other recipes before the one you have specified. Dependency information can help you understand why a recipe is built.
+有时候很难判断 BitBake 为什么要在构建你的指定的软件包之前还要构建其他recipe。依赖信息可以帮助你立即为什么要构建某个recipe。
 
 To generate dependency information for a recipe, run the following command:
+要生成某个脚本的依赖信息，可以运行下面的命令：
 
 ```
      $ bitbake -g recipename
@@ -599,18 +615,25 @@ To generate dependency information for a recipe, run the following command:
 ```
 
 This command writes the following files in the current directory:
+这条命令会在当前目录生成下面的文件：
 
 *   `pn-buildlist`: A list of recipes/targets involved in building  _`recipename`_ . "Involved" here means that at least one task from the recipe needs to run when building  _`recipename`_  from scratch. Targets that are in [`ASSUME_PROVIDED`][787] are not listed.
+*   `pn-buildlist`： 涉及到构建 _`recipename`_ 的 recipes/targets 的列表。“涉及” 在此处的意思是构建 _`recipename`_ 过程中，recipe 的至少一个 task 需要运行。在  [`ASSUME_PROVIDED`][787] 中的 targets 不会列出来。
 
 *   `task-depends.dot`: A graph showing dependencies between tasks.
+*   `task-depends.dot`： 图形化显示 task 之间的依赖关系。
 
 The graphs are in [DOT][3753] format and can be converted to images (e.g. using the `dot` tool from [Graphviz][3754]).
+图像是 [DOT][3753] 格式，可以转换成图片 (比如， 使用 [Graphviz][3754] 的 `dot` 工具).
 
 ### Notes
 
 *   DOT files use a plain text format. The graphs generated using the `bitbake -g` command are often so large as to be difficult to read without special pruning (e.g. with Bitbake's `-I` option) and processing. Despite the form and size of the graphs, the corresponding `.dot` files can still be possible to read and provide useful information.
+*   DOT 文件是纯文本格式。使用 `bitbake -g` 生成的图像通常都很大，如果不做特殊裁剪（比如，配合 BitBake 的 `-I` 选项）会很难阅读和处理。尽管图像的格式和大小，对应的 `.dot` 文件仍然可以阅读并提供有用的信息。
 
     As an example, the `task-depends.dot` file contains lines such as the following:
+    作为一个例子，文件 `task-depends.dot` 包含了下面的内容：
+
 
     ```
          "libxslt.do_configure" -> "libxml2.do_populate_sysroot"
@@ -618,10 +641,13 @@ The graphs are in [DOT][3753] format and can be converted to images (e.g. usin
     ```
 
     The above example line reveals that the [`do_configure`][419] task in `libxslt` depends on the [`do_populate_sysroot`][420] task in `libxml2`, which is a normal [`DEPENDS`][421] dependency between the two recipes.
+    上面的例子反应了在 `libxslt` 中的 [`do_configure`][419] task 依赖于 `libxml2` 中的 [`do_populate_sysroot`][420] task，这是两个 recipe 之间通常的依赖。
 
 *   For an example of how `.dot` files can be processed, see the `scripts/contrib/graph-tool` Python script, which finds and displays paths between graph nodes.
+*   举个如何处理 `.dot` 的例子，可以查看 `scripts/contrib/graph-tool` 中的 Python 脚本，它可以查找和显示两个图像节点间的路径。
 
 You can use a different method to view dependency information by using the following command:
+通过使用下面的命令，你可以使用一个不同的方法来查看依赖信息：
 
 ```
      $ bitbake -g -u taskexp recipename
@@ -629,14 +655,18 @@ You can use a different method to view dependency information by using the follo
 ```
 
 This command displays a GUI window from which you can view build-time and runtime dependencies for the recipes involved in building  _`recipename`_ .
+这个命令会显示一个图形界面窗口，在上面你可以查看构建 _`recipename`_ 的构建时间和运行时依赖关系。
 
-### 2.3.5. Viewing Task Variable Dependencies[¶][422]
+### 2.3.5. 查看任务变量依赖关系[¶][422]
 
 As mentioned in the "[Checksums (Signatures)][3755]" section of the BitBake User Manual, BitBake tries to automatically determine what variables a task depends on so that it can rerun the task if any values of the variables change. This determination is usually reliable. However, if you do things like construct variable names at runtime, then you might have to manually declare dependencies on those variables using `vardeps` as described in the "[Variable Flags][3756]" section of the BitBake User Manual.
+如在 BitBake User Manual的 "[Checksums (Signatures)][3755]" 一节提到的，BitBake 会尝试自动化决定 task 依赖那些变量，这样如果任何一个变量的值变了，它就可以重新运行这个任务。这个决策通常是可靠的。然而如果你做一些运行中构造变量名的操作，那么你就可能必须使用 `vardeps` 手动声明变量间的依赖关系，用法在 BitBake User Manual 中的 "[Variable Flags][3756]" 一节有说明。
 
 If you are unsure whether a variable dependency is being picked up automatically for a given task, you can list the variable dependencies BitBake has determined by doing the following:
+如果你不确定某个变量的依赖关系在特定 task 中被使用了，你可以通过下面的操作列出 BitBake 已经使用了的变量依赖关系：
 
 1.  Build the recipe containing the task:
+1.  构建包含 task 的 recipe：
 
     ```
          $ bitbake recipename
@@ -644,6 +674,7 @@ If you are unsure whether a variable dependency is being picked up automatically
     ```
 
 2.  Inside the [`STAMPS_DIR`][788] directory, find the signature data (`sigdata`) file that corresponds to the task. The `sigdata` files contain a pickled Python database of all the metadata that went into creating the input checksum for the task. As an example, for the [`do_fetch`][789] task of the `db` recipe, the`sigdata` file might be found in the following location:
+2.  在目录 [`STAMPS_DIR`][788] 中找出 task 对应的签名数据（`sigdata`）文件。`sigdata` 文件包含了一个 pickled Python 数据库，这存储了全部要用来创建 task 的输入校验和的元数据。作为一个例子，对于 `db` recipe 的 [`do_fetch`][789] task，`sigdata` 文件可以在下面的位置找到：
 
     ```
          ${BUILDDIR}/tmp/stamps/i586-poky-linux/db/6.0.30-r1.do_fetch.sigdata.7c048c18222b16ff0bcee2000ef648b1
@@ -651,8 +682,10 @@ If you are unsure whether a variable dependency is being picked up automatically
     ```
 
     For tasks that are accelerated through the shared state ([sstate][790]) cache, an additional `siginfo` file is written into [`SSTATE_DIR`][791] along with the cached task output. The `siginfo` files contain exactly the same information as `sigdata` files.
+    对于要通过共享状态([sstate][790])缓存加速的 task ，额外的 `siginfo` 文件要联通 task 输出一起写到 [`SSTATE_DIR`][791] 目录。 `siginfo` 文件包含了和 `sigdata` 文件一样的信息。
 
 3.  Run `bitbake-dumpsig` on the `sigdata` or `siginfo` file. Here is an example:
+3.  对文件 `sigdata` 或 `siginfo` 运行 `bitbake-dumpsig`命令。下面和四个例子：
 
     ```
          $ bitbake-dumpsig ${BUILDDIR}/tmp/stamps/i586-poky-linux/db/6.0.30-r1.do_fetch.sigdata.7c048c18222b16ff0bcee2000ef648b1
@@ -660,6 +693,7 @@ If you are unsure whether a variable dependency is being picked up automatically
     ```
 
     In the output of the above command, you will find a line like the following, which lists all the (inferred) variable dependencies for the task. This list also includes indirect dependencies from variables depending on other variables, recursively.
+    上面命令的输出中，你将会找到一行类似下面的内容，这列出了这个 task 的全部（推测的）变量依赖关系。这个列表同时也递归的包括了变量之间的间接依赖关系
 
     ```
          Task dependencies: ['PV', 'SRCREV', 'SRC_URI', 'SRC_URI[md5sum]', 'SRC_URI[sha256sum]', 'base_do_fetch']
@@ -669,12 +703,16 @@ If you are unsure whether a variable dependency is being picked up automatically
     ### Note
 
     Functions (e.g. `base_do_fetch`) also count as variable dependencies. These functions in turn depend on the variables they reference.
+    函数（比如 `base_do_fetch`）也会被当做变量的依赖。这些函数按顺序依赖于它们引用的变量。
 
     The output of `bitbake-dumpsig` also includes the value each variable had, a list of dependencies for each variable, and [`BB_HASHBASE_WHITELIST`][792]information.
+    `bitbake-dumpsig` 的输出同时也会包含每个变量的值，每个变量的依赖关系列表，以及 [`BB_HASHBASE_WHITELIST`][792] 信息。
 
 There is also a `bitbake-diffsigs` command for comparing two `siginfo` or `sigdata` files. This command can be helpful when trying to figure out what changed between two versions of a task. If you call `bitbake-diffsigs` with just one file, the command behaves like `bitbake-dumpsig`.
+有一个 `bitbake-diffsigs` 命令可以比较两个 `siginfo` 或 `sigdata` 文件。当你尝试找出一个任务的两个版本有何变化时会很有帮助。如果你调用 `bitbake-diffsigs` 处理一个文件，效果就和 `bitbake-dumpsig` 一样。
 
 You can also use BitBake to dump out the signature construction information without executing tasks by using either of the following BitBake command-line options:
+你也可以使用下面的 BitBake 命令行选项来输出签名结构信息而不执行 task。
 
 ```
      ‐‐dump-signatures=SIGNATURE_HANDLER
@@ -685,12 +723,15 @@ You can also use BitBake to dump out the signature construction information with
 ### Note
 
 Two common values for  _`SIGNATURE_HANDLER`_  are "none" and "printdiff", which dump only the signature or compare the dumped signature with the cached one, respectively.
+_`SIGNATURE_HANDLER`_ 的两个通常值是 "none" 和 "printdiff"，这只会导出签名内容或者和缓存中已有的导出的签名内容进行比较。
 
 Using BitBake with either of these options causes BitBake to dump out `sigdata` files in the `stamps` directory for every task it would have executed instead of building the specified target package.
+使用 BitBake 和其中任意的选项可以造成 BitBake 在 `stamps` 目录导出每个它执行的而不是构建的特定目标软件包的 `sigdata` 文件。
 
-### 2.3.6. Running Specific Tasks[¶][423]
+### 2.3.6. 运行特定的 task[¶][423]
 
 Any given recipe consists of a set of tasks. The standard BitBake behavior in most cases is: `do_fetch`, `do_unpack`, `do_patch`, `do_configure`,`do_compile`, `do_install`, `do_package`, `do_package_write_*`, and `do_build`. The default task is `do_build` and any tasks on which it depends build first. Some tasks, such as `do_devshell`, are not part of the default build chain. If you wish to run a task that is not part of the default build chain, you can use the `-c` option in BitBake. Here is an example:
+任何给定的 recipe 都包含一组 task。标准的 BitBake 行为通常是： `do_fetch`，`do_unpack`，`do_patch`，`do_configure`，`do_compile`，`do_install`，`do_package`，`do_package_write_*`，和 `do_build`。默认的 task 是 `do_build` 和任何它依赖的 task。一些 task ，比如 `do_devshell` ，就不是默认构建链中的一环。如果你希望运行默认构建链以外的任务，你需要在 BitBake 中使用 `-c` 选项。下面是一个例子：
 
 ```
      $ bitbake matchbox-desktop -c devshell
@@ -698,14 +739,19 @@ Any given recipe consists of a set of tasks. The standard BitBake behavior in mo
 ```
 
 The `-c` option respects task dependencies, which means that all other tasks (including tasks from other recipes) that the specified task depends on will be run before the task. Even when you manually specify a task to run with `-c`, BitBake will only run the task if it considers it "out of date". See the "[Stamp Files and the Rerunning of Tasks][3757]" section for how BitBake determines whether a task is "out of date".
+`-c` 选项对应的 task 依赖意味着指定任务依赖的其它全部 task（包括其它 recipe 的 task）都将会在执行 task 之前运行。即使当你使用 `-c` 选项手动选择一个任务执行时， BitBake 也只会在它认为过期的情况下运行这个任务。具体参见 "[Stamp Files and the Rerunning of Tasks][3757]" 一节，了解 BitBake 如何决定一个任务过期了。
 
 If you want to force an up-to-date task to be rerun (e.g. because you made manual modifications to the recipe's [`WORKDIR`][3758] that you want to try out), then you can use the `-f` option.
+如果你想要强制一个最新的 task 重新运行（比如，因为你自己手动修改了 recipe 的 [`WORKDIR`][3758] ，想要试验一下），然后你可以使用 `-f` 选项。
 
 ### Note
 
 The reason `-f` is never required when running the [`do_devshell`][3759] task is because the `[`[`nostamp`][3760]`]` variable flag is already set for the task.
 
+在运行 [`do_devshell`][3759] task 时从来不需要 `-f` 选项的原因是 `[`[`nostamp`][3760]`]` 变量标志已经为任务添加了这个选项。
+
 The following example shows one way you can use the `-f` option:
+下面的例子展示了一种你可以使用 `-f` 选项的情景：
 
 ```
      $ bitbake matchbox-desktop
@@ -720,14 +766,18 @@ The following example shows one way you can use the `-f` option:
 ```
 
 This sequence first builds and then recompiles `matchbox-desktop`. The last command reruns all tasks (basically the packaging tasks) after the compile. BitBake recognizes that the `do_compile` task was rerun and therefore understands that the other tasks also need to be run again.
+这个命令序列首先构建，然后重新编译 `matchbox-desktop`。最后一个命令在编译之后重新运行了全部 task（基础的打包 task）。 BitBake 识别出 `do_compile` task 是在重新运行，因此理解其它 task 也需要再次运行。
 
 Another, shorter way to rerun a task and all [normal recipe build tasks][3761] that depend on it is to use the `-C` option.
+另外，重新运行一个 task 和它依赖的全部 [正常 recipe 构建 tasks][3761] 的更简单的做法是使用 `-C` 选项。
 
 ### Note
 
 This option is upper-cased and is separate from the `-c` option, which is lower-cased.
+这个选项和 `-c` 的区别是前者是大写的后者是小写的。
 
 Using this option invalidates the given task and then runs the [`do_build`][3762] task, which is the default task if no task is given, and the tasks on which it depends. You could replace the final two commands in the previous example with the following single command:
+使用这个选项无效给定的任务，然后运行 [`do_build`][3762] task ，这个 task 是在没有给定 task 的情况下的默认 task， 和它依赖的 task。你可以在上面的例子中用下面的一条命令替换最后两个命令：
 
 ```
      $ bitbake matchbox-desktop -C compile
@@ -735,15 +785,20 @@ Using this option invalidates the given task and then runs the [`do_build`][376
 ```
 
 Internally, the `-f` and `-C` options work by tainting (modifying) the input checksum of the specified task. This tainting indirectly causes the task and its dependent tasks to be rerun through the normal task dependency mechanisms.
+在内部， `-f` 和 `-C` 选项通过检查指定 task 的校验和是否被修改了来工作。这些变动会间接的造成 task 和它依赖的 task 因为正常的 task 依赖机制重新运行。
 
 ### Note
 
 BitBake explicitly keeps track of which tasks have been tainted in this fashion, and will print warnings such as the following for builds involving such tasks:
+BitBake 照这样明确的追踪那些task 被修改了，将会打印下面那样的关于涉及构建的 task 的警告信息：
+
 ```
      WARNING: /home/ulf/poky/meta/recipes-sato/matchbox-desktop/matchbox-desktop_2.1.bb.do_compile is tainted from a forced run
 
 ```
 The purpose of the warning is to let you know that the work directory and build output might not be in the clean state they would be in for a "normal" build, depending on what actions you took. To get rid of such warnings, you can remove the work directory and rebuild the recipe, as follows:
+警告的目的是让你知道工作目录，以及构建输出可能不是在一个干净的状态下进行的，根据你采取的动作，他们有可能需要进行一次“正常”构建。要避免下面的警告，你可以删除工作目录然后再重新构建 recipe，如下所述：
+
 ```
      $ bitbake matchbox-desktop -c clean
      $ bitbake matchbox-desktop
@@ -751,6 +806,7 @@ The purpose of the warning is to let you know that the work directory and build 
 ```
 
 You can view a list of tasks in a given package by running the `do_listtasks` task as follows:
+你可以通过运行 `do_listtasks` 任务看到给定软件包的 task 列表：
 
 ```
      $ bitbake matchbox-desktop -c listtasks
@@ -758,24 +814,31 @@ You can view a list of tasks in a given package by running the `do_listtasks` 
 ```
 
 The results appear as output to the console and are also in the file `${WORKDIR}/temp/log.do_listtasks`.
+结果会输出到中断，同时也会保存在文件 `${WORKDIR}/temp/log.do_listtasks`。
 
-### 2.3.7. General BitBake Problems[¶][424]
+### 2.3.7. 通常 BitBake 问题[¶][424]
 
 You can see debug output from BitBake by using the `-D` option. The debug output gives more information about what BitBake is doing and the reason behind it. Each `-D` option you use increases the logging level. The most common usage is `-DDD`.
+你可以通过使用 `-D` 选项查看 BitBake 的调试输出结果。这些调试输出结果可以提供更多关于 BitBake 干了什么和为什么这么干的信息。你每增加一个 `-D` 选项，就可以提高日志等级。通常用得最多的是 `-DDD`。
 
 The output from `bitbake -DDD -v`  _`targetname`_  can reveal why BitBake chose a certain version of a package or why BitBake picked a certain provider. This command could also help you in a situation where you think BitBake did something unexpected.
+`bitbake -DDD -v` _`targetname`_ 命令的输出可以展示为什么 BitBake 挑选某个特定版本的软件包，或者为什么 BitBake 挑选某个供应者。这条命令页可以在 BitBake 干了不是你预期动作的情况帮助你。
 
-### 2.3.8. Development Host System Issues[¶][425]
+### 2.3.8. 开发主机系统问题[¶][425]
 
 Sometimes issues on the host development system can cause your build to fail. Following are known, host-specific problems. Be sure to always consult the [Release Notes][3763] for a look at all release-related issues.
+有些时候开发主机系统的的问题可能造成你的构建失败。下面是一些已知的主机相关的问题。一定要确保查阅 [Release Notes][3763] 来了解发行版相关的问题。
 
 *   _`glibc-initial` fails to build_ : If your development host system has the unpatched `GNU Make 3.82`, the [`do_install`][793] task fails for `glibc-initial`during the build.
+*   _`glibc-initial` 构建失败_ : 如果你的开发环境没有打补丁的 `GNU Make 3.82`，那么 [`do_install`][793] task 就会因为 `glibc-initial` 在构建过程中失败。 
 
     Typically, every distribution that ships `GNU Make 3.82` as the default already has the patched version. However, some distributions, such as Debian, have `GNU Make 3.82` as an option, which is unpatched. You will see this error on these types of distributions. Switch to `GNU Make 3.81` or patch your `make` to solve the problem.
+    通常情况下，每个发行版都会包含默认打过补丁的 `GNU Make 3.82` 。然后一些发行版，比如 Debian， 把 `GNU Make 3.82` 作为一个可选项，就是没有打过补丁的。你将会在这类发行版本上看到这个错误。切换到 `GNU Make 3.81` 或者对你的 `make` 打补丁可以解决这个问题。
 
-### 2.3.9. Building with No Dependencies[¶][426]
+### 2.3.9. 无依赖关系的构建[¶][426]
 
 To build a specific recipe (`.bb` file), you can use the following command form:
+要构建一个特定的 recipe（`.bb` 文件），你可以使用下面的命令：
 
 ```
      $ bitbake -b somepath/somerecipe.bb
@@ -783,38 +846,50 @@ To build a specific recipe (`.bb` file), you can use the following command form
 ```
 
 This command form does not check for dependencies. Consequently, you should use it only when you know existing dependencies have been met.
+这个命令格式不会检查依赖关系。因此，你应该在确定已存在的依赖关系满足条件的下使用这中命令。
 
 ### Note
 
 You can also specify fragments of the filename. In this case, BitBake checks for a unique match.
+你也可以指定文件的部分名称。这种情况下 BitBake 会进行一次唯一的检查。
 
-### 2.3.10. Recipe Logging Mechanisms[¶][427]
+### 2.3.10. Recipe 日志机制[¶][427]
 
 The Yocto Project provides several logging functions for producing debugging output and reporting errors and warnings. For Python functions, the following logging functions exist. All of these functions log to `${T}/log.do_` _`task`_ , and can also log to standard output (stdout) with the right settings:
+Yocto 项目提供多个日志函数来产生调试输出和报告错误和警告。对于 Python 函数，有下面的日志函数。通过正确的设置，所有这些函数会保存日志到 `${T}/log.do_` _`task`_，也会将日志输出到标准输出（stdout）。
 
 *   `bb.plain(` _`msg`_ `)`: Writes  _`msg`_  as is to the log while also logging to stdout.
+*   `bb.plain(` _`msg`_ `)`: 将 _`msg`_ 原封不动的写入日志和标准输出。
 
 *   `bb.note(` _`msg`_ `)`: Writes "NOTE:  _`msg`_ " to the log. Also logs to stdout if BitBake is called with "-v".
+*   `bb.note(` _`msg`_ `)`: 将 "NOTE:  _`msg`_ " 写入日志。如果传给了 BitBake 参数 “-v"，同时日志也会输出到标准输出。
 
 *   `bb.debug(` _`level`_ `, ` _`msg`_ `)`: Writes "DEBUG:  _`msg`_ " to the log. Also logs to stdout if the log level is greater than or equal to  _`level`_ . See the "[-D][794]" option in the BitBake User Manual for more information.
+*   `bb.debug(` _`level`_ `, ` _`msg`_ `)`:  将 "DEBUG:  _`msg`_ " 写入日志。同时也会将日志等级高于 _`level`_ 的日志输出到标准输出。参见 BitBake User Manual 中的 "[-D][794]".
 
 *   `bb.warn(` _`msg`_ `)`: Writes "WARNING:  _`msg`_ " to the log while also logging to stdout.
+*   `bb.warn(` _`msg`_ `)`: 将 "WARNING:  _`msg`_ " 写入日志，同时也会传输到标准输出。
 
 *   `bb.error(` _`msg`_ `)`: Writes "ERROR:  _`msg`_ " to the log while also logging to stdout.
+*   `bb.error(` _`msg`_ `)`: 将 "ERROR:  _`msg`_ " 写入日志，同时也会传输到标准输出
 
     ### Note
 
     Calling this function does not cause the task to fail.
+    调用这个函数并不会造成 task 失败。
 
 *   `bb.fatal(` _`msg`_ `)`: This logging function is similar to `bb.error(` _`msg`_ `)` but also causes the calling task to fail.
+*   `bb.fatal(` _`msg`_ `)`: 这个日志函数类似 `bb.error(` _`msg`_ `)` ，但是会造成调用它的 task 失败。
 
     ### Note
 
     `bb.fatal()` raises an exception, which means you do not need to put a "return" statement after the function.
+    `bb.fatal()` 会产生一个异常，也就意味着你不需要在这个函数以后防止一条 "return" 语句。
 
 The same logging functions are also available in shell functions, under the names `bbplain`, `bbnote`, `bbdebug`, `bbwarn`, `bberror`, and `bbfatal`. The[`logging`][3764] class implements these functions. See that class in the `meta/classes` folder of the [Source Directory][3765] for information.
+同样的日志函数也可以在 shell 函数中也有，如这些名字 `bbplain`, `bbnote`, `bbdebug`, `bbwarn`, `bberror`，和 `bbfatal`。[`logging`][3764] 类实现了这些函数。详情参见 [Source Directory][3765] 中的文件夹 `meta/classes`。
 
-#### 2.3.10.1. Logging With Python[¶][22]
+#### 2.3.10.1. 用 Python 记录日志[¶][22]
 
 When creating recipes using Python and inserting code that handles build logs, keep in mind the goal is to have informative logs while keeping the console as "silent" as possible. Also, if you want status messages in the log, use the "debug" loglevel.
 
@@ -838,7 +913,7 @@ Following is an example written in Python. The code handles logging for a functi
 
 ```
 
-#### 2.3.10.2. Logging With Bash[¶][23]
+#### 2.3.10.2. 用 Bash 记录日志[¶][23]
 
 When creating recipes using Bash and inserting code that handles build logs, you have the same goals - informative with minimal console output. The syntax you use for recipes written in Bash is similar to that of recipes written in Python described in the previous section.
 
@@ -865,9 +940,10 @@ Following is an example written in Bash. The code logs the progress of the `do_
 
 ```
 
-### 2.3.11. Other Tips[¶][428]
+### 2.3.11. 其他建议[¶][428]
 
 Here are some other tips that you might find useful:
+下面的建议你可能会觉得有用：
 
 *   When adding new packages, it is worth watching for undesirable items making their way into compiler command lines. For example, you do not want references to local system files like `/usr/lib/` or `/usr/include/`.
 
@@ -912,23 +988,30 @@ Here are some other tips that you might find useful:
 
     The manuals might not be the right place to document variables that are purely internal and have a limited scope (e.g. internal variables used to implement a single `.bbclass` file).
 
-### 2.4. Maintaining Build Output Quality[¶][800]
+### 2.4. 维护构建输出的质量[¶][800]
 
 Many factors can influence the quality of a build. For example, if you upgrade a recipe to use a new version of an upstream software package or you experiment with some new configuration options, subtle changes can occur that you might not detect until later. Consider the case where your recipe is using a newer version of an upstream package. In this case, a new version of a piece of software might introduce an optional dependency on another library, which is auto-detected. If that library has already been built when the software is building, the software will link to the built library and that library will be pulled into your image along with the new software even if you did not want the library.
+很多因素会影响构建的质量。举个例子，如果你使用上游软件包的新版本升级你的 recpie，或者你试验一些新的配置选项，发生的微妙的变化你当时不会发现，知道后期才会知道。考虑下这种情况：你的脚本使用新版本的上游软件包。在这种情况下，软件某部分的新版本会引入一个对另一个库的依赖，而这些是自动探测道德。如果在构建这个软件时这个库已经构建了，那么软件就会链接这个构件好的库，同时这个库也会和新软件一起被拉入你的镜像，即使你并不想要这个库。
 
 The [`buildhistory`][4175] class exists to help you maintain the quality of your build output. You can use the class to highlight unexpected and possibly unwanted changes in the build output. When you enable build history, it records information about the contents of each package and image and then commits that information to a local Git repository where you can examine the information.
+[`buildhistory`][4175] class 的存在可以帮助你维持你的构建结果的质量。你可以使用这个 class 在构建结果中突出显示非预期的可能不想要的变化。当你市政了构建历史，他可以记录关于每个包和镜像的信息，然后提交信息到本地一个 Git 仓库，在这里你可以检查这些信息。
 
 The remainder of this section describes the following:
+本节剩下的部分会描述下面的问题：
 
 *   How you can enable and disable build history
+*   你如何打开/关闭构建历史功能
 
 *   How to understand what the build history contains
+*   如何理解构建历史包含了哪些内容
 
 *   How to limit the information used for build history
+*   如何限制用于构建历史的信息
 
 *   How to examine the build history from both a command-line and web interface
+*   如何通过命令行和 web 接口检查构建历史
 
-### 2.4.1. Enabling and Disabling Build History[¶][429]
+### 2.4.1. 打开和关闭构建历史[¶][429]
 
 Build history is disabled by default. To enable it, add the following `INHERIT` statement and set the [`BUILDHISTORY_COMMIT`][3766] variable to "1" at the end of your `conf/local.conf` file found in the [Build Directory][3767]:
 
@@ -946,7 +1029,7 @@ Enabling build history increases your build times slightly, particularly for ima
 
 You can disable build history by removing the previous statements from your `conf/local.conf` file.
 
-### 2.4.2. Understanding What the Build History Contains[¶][430]
+### 2.4.2. 理解构建历史都包含那些内容[¶][430]
 
 Build history information is kept in `${`[`TOPDIR`][3769]`}/buildhistory` in the Build Directory as defined by the [`BUILDHISTORY_DIR`][3770] variable. The following is an example abbreviated listing:
 
@@ -956,7 +1039,7 @@ Build history information is kept in `${`[`TOPDIR`][3769]`}/buildhistory` in t
 
 At the top level, there is a `metadata-revs` file that lists the revisions of the repositories for the layers enabled when the build was produced. The rest of the data splits into separate `packages`, `images` and `sdk` directories, the contents of which are described below.
 
-#### 2.4.2.1. Build History Package Information[¶][24]
+#### 2.4.2.1. 构建历史软件包信息[¶][24]
 
 The history for each package contains a text file that has name-value pairs with information about the package. For example, `buildhistory/packages/i586-poky-linux/busybox/busybox/latest` contains the following:
 
@@ -1040,7 +1123,7 @@ Here are some notes on using the `buildhistory-collect-srcrevs` command:
 
 *   The script does apply special handling when building for multiple machines. However, the script does place a comment before each set of values that specifies which triplet to which they belong as shown above (e.g., `i586-poky-linux`).
 
-#### 2.4.2.2. Build History Image Information[¶][25]
+#### 2.4.2.2. 构建历史镜像信息[¶][25]
 
 The files produced for each image are as follows:
 
@@ -1101,7 +1184,7 @@ As you can see, build history produces image information, including dependency g
 
 Here, you set the [`BUILDHISTORY_FEATURES`][3445] variable to use the image feature only.
 
-#### 2.4.2.4. Build History SDK Information[¶][27]
+#### 2.4.2.4. 构建历史SDK信息[¶][27]
 
 Build history collects similar information on the contents of SDKs (e.g. `bitbake -c populate_sdk imagename`) as compared to information it collects for images. Furthermore, this information differs depending on whether an extensible or standard SDK is being produced.
 
@@ -1149,7 +1232,7 @@ Here is an example of `sdk-info.txt`:
 
 Other than `SDKSIZE`, which is the total size of the files in the SDK in Kbytes, the name-value pairs are variables that might have influenced the content of the SDK. This information is often useful when you are trying to determine why a change in the package or file listings has occurred.
 
-#### 2.4.2.5. Examining Build History Information[¶][28]
+#### 2.4.2.5. 检查构建历史信息[¶][28]
 
 You can examine build history output from the command line or from a web interface.
 
@@ -1199,41 +1282,58 @@ Here is a sample screenshot of the interface:
 ![](https://www.yoctoproject.org/docs/current/ref-manual/figures/buildhistory-web.png)
  |
 
-### 2.5. Speeding Up the Build[¶][801]
+### 2.5. 加速构建[¶][801]
 
 Build time can be an issue. By default, the build system uses simple controls to try and maximize build efficiency. In general, the default settings for all the following variables result in the most efficient build times when dealing with single socket systems (i.e. a single CPU). If you have multiple CPUs, you might try increasing the default values to gain more speed. See the descriptions in the glossary for each variable for more information:
+构建时间可能会成为一个问题。默认情况下，构建系统使用简单的控制来尝试和最大化构建效率。通常，在单个socket 系统（比如，一个CPU）的情况下，对下面全部变量的默认配置可以产生最有效率的构建时间。如果你有多个 CPU，你可能通过提高默认值来获得更快的速度。在术语表中查看每个变量的描述可以获得更多信息：
 
 *   [`BB_NUMBER_THREADS`:][1817] The maximum number of threads BitBake simultaneously executes.
+*   [`BB_NUMBER_THREADS`:][1817]  BitBake 同时可以执行的最大线程数。
 
 *   [`BB_NUMBER_PARSE_THREADS`:][1818] The number of threads BitBake uses during parsing.
+*   [`BB_NUMBER_PARSE_THREADS`:][1818] 在解析过程中 BitBake 可以使用的最大线程数。
 
 *   [`PARALLEL_MAKE`:][1819] Extra options passed to the `make` command during the [`do_compile`][1820] task in order to specify parallel compilation on the local build host.
+*   [`PARALLEL_MAKE`:][1819] 在执行 [`do_compile`][1820] task 时传给 `make` 命令的额外参数，目的是在本地构建主机上指定并行编译。
 
 *   [`PARALLEL_MAKEINST`:][1821] Extra options passed to the `make` command during the [`do_install`][1822] task in order to specify parallel installation on the local build host.
+*   [`PARALLEL_MAKEINST`:][1821] 在执行 [`do_install`][1822] task 时传给 `make` 命令的额外参数，目的是在本地构建主机上指定并行安装。
 
 As mentioned, these variables all scale to the number of processor cores available on the build system. For single socket systems, this auto-scaling ensures that the build system fundamentally takes advantage of potential parallel operations during the build based on the build machine's capabilities.
+如上所述，这些变量全都和构建系统上可用的处理器核心数关联。对于单个socket 系统，这会自动缩小以保证构建系统在构建过程中根据机器的能力根本上利用潜在并行操作性能。
 
 Following are additional factors that can affect build speed:
+下面是额外的可以影响构建速度的因素：
 
 *   File system type: The file system type that the build is being performed on can also influence performance. Using `ext4` is recommended as compared to `ext2` and `ext3` due to `ext4` improved features such as extents.
+*   文件系统类型： 构建运行的的文件系统类型可能会影响性能。相对于 `ext2` 和`ext3`，推荐使用 `ext4`，应为`ext4`提高了性能，比如范围
 
 *   Disabling the updating of access time using `noatime`: The `noatime` mount option prevents the build system from updating file and directory access times.
+*   通过 `noatime` 禁止更新访问时间：`noatime` 挂载操作会组织构建系统更新文件和目录的访问时间。
 
 *   Setting a longer commit: Using the "commit=" mount option increases the interval in seconds between disk cache writes. Changing this interval from the five second default to something longer increases the risk of data loss but decreases the need to write to the disk, thus increasing the build performance.
+*   设置一个更长提交：使用 “commit=” 挂载选项提高磁盘缓存写之间的间隔。改变这个间隔，从默认的5秒改为更长的间隔会增加数据丢失的风险，但会减少写磁盘的需求，从而提高构建性能。
 
 *   Choosing the packaging backend: Of the available packaging backends, IPK is the fastest. Additionally, selecting a singular packaging backend also helps.
+*   挑选打包后端：在可用的打包后端中，IPK是最快的。额外的，挑选一个打包后端同样也有帮助。
 
 *   Using `tmpfs` for [`TMPDIR`][1823] as a temporary file system: While this can help speed up the build, the benefits are limited due to the compiler using `-pipe`. The build system goes to some lengths to avoid `sync()` calls into the file system on the principle that if there was a significant failure, the [Build Directory][1824] contents could easily be rebuilt.
+*   为 [`TMPDIR`][1823] 使用 `tmpfs` 作为临时文件系统：这条可以加速构建，好处比较有限，因为编译器会使用 `-pipe`。理论上构建系统会去一些长度来避免调用 `sync()` 到文件系统，只要没有发生明显的错误，[Build Directory][1824] 的内容可以很轻松的重建。
 
 *   Inheriting the [`rm_work`][1825] class: Inheriting this class has shown to speed up builds due to significantly lower amounts of data stored in the data cache as well as on disk. Inheriting this class also makes cleanup of [`TMPDIR`][1826] faster, at the expense of being easily able to dive into the source code. File system maintainers have recommended that the fastest way to clean up large numbers of files is to reformat partitions rather than delete files due to the linear nature of partitions. This, of course, assumes you structure the disk partitions and file systems in a way that this is practical.
+*   继承 [`rm_work`][1825] class：继承这个 class 已经被证明加速构建，因为会显著的减少在数据缓存和磁盘上的数据使用量。继承这个 class 也会更快的清理 [`TMPDIR`][1826]，这是以能够轻松的进入源代码为代价的。文件系统维护者推荐最快的清理大量文件的方法是重新格式化分区而不是删除文件，这是因为分区线性的天性。这也就是假设你是以通用的方法对磁盘和文件系统分区的。
 
 Aside from the previous list, you should keep some trade offs in mind that can help you speed up the build:
+除了前面的列表，你应该考虑一些取舍来帮助你加速构建：
 
 *   Remove items from [`DISTRO_FEATURES`][1827] that you might not need.
+*   从 [`DISTRO_FEATURES`][1827] 删除些你可能不需要的文件。
 
 *   Exclude debug symbols and other debug information: If you do not need these symbols and other debug information, disabling the `*-dbg` package generation can speed up the build. You can disable this generation by setting the [`INHIBIT_PACKAGE_DEBUG_SPLIT`][1828] variable to "1".
+*   去除调试符号和其它调试信息：如果你不需要这些符号和其它调试信息，禁止产生 `*-dbg` 包可以加速构建。你可以通过将 [`INHIBIT_PACKAGE_DEBUG_SPLIT`][1828] 设置为 "1" 来禁止产生这些包。
 
 *   Disable static library generation for recipes derived from `autoconf` or `libtool`: Following is an example showing how to disable static libraries and still provide an override to handle exceptions:
+*   禁止从 `autoconf` 或 `libtool` 的 recipe 产生静态库：下面是一个例子，演示了如何禁止静态库和仍然提供重载异常处理：
 
     ```
          STATICLIBCONF = "--disable-static"
@@ -1245,44 +1345,56 @@ Aside from the previous list, you should keep some trade offs in mind that can h
     ### Notes
 
     *   Some recipes need static libraries in order to work correctly (e.g. `pseudo-native` needs `sqlite3-native`). Overrides, as in the previous example, account for these kinds of exceptions.
+    *   一些 recipe 需要静态库才能正常工作（比如，`pseude-native` 需要 `sqlite3-native`。重载，就如上面的例子，考虑这些类型的异常。
 
     *   Some packages have packaging code that assumes the presence of the static libraries. If so, you might need to exclude them as well.
+    *   一些软件包已经打包了代码，假设了静态库的存在。如果是这样，你可能就需要排除他们。
 
-### Chapter 3. A Closer Look at the Yocto Project Development Environment[¶][1829]
-
-
+### Chapter 3. 近观 Yocto 项目开发环境[¶][1829]
 
 This chapter takes a more detailed look at the Yocto Project development environment. The following diagram represents the development environment at a high level. The remainder of this chapter expands on the fundamental input, output, process, and [Metadata][4525]) blocks in the Yocto Project development environment.
+本章将会详细的介绍 Yocto 项目开发环境。下面的图表充高层次展示了开发环境。本章剩余的部分会展开 Yocto 项目开发环境的基础输入、输出、处理和[元数据][4525] 块。
 
-| 
+
 ![](https://www.yoctoproject.org/docs/current/ref-manual/figures/yocto-environment-ref.png)
- |
+
 
 The generalized Yocto Project Development Environment consists of several functional areas:
+生成好的 Yocto 项目开发环境由下面几个功能块组成：
 
 *   _User Configuration:_  Metadata you can use to control the build process.
+*   _User Configuration:_  你可以用来控制构建过程的元数据。
 
 *   _Metadata Layers:_  Various layers that provide software, machine, and distro Metadata.
+*   _Metadata Layers:_  多种 layer 用来提供软件、机器和发行版元数据。
 
 *   _Source Files:_  Upstream releases, local projects, and SCMs.
+*   _Source Files:_ 上游发布的，本地项目，和 SCM。
 
 *   _Build System:_  Processes under the control of [BitBake][3455]. This block expands on how BitBake fetches source, applies patches, completes compilation, analyzes output for package generation, creates and tests packages, generates images, and generates cross-development tools.
+*   _Build System:_  [BitBake][3455] 控制的程序。这一块会展开 BitBake 如何获取代码，应用补丁，完成编译，分析包的生成结果、创建和测试软件包，生成镜像，以及生成交叉编译工具链。
 
 *   _Package Feeds:_  Directories containing output packages (RPM, DEB or IPK), which are subsequently used in the construction of an image or SDK, produced by the build system. These feeds can also be copied and shared using a web server or other means to facilitate extending or updating existing images on devices at runtime if runtime package management is enabled.
+*   _Package Feeds:_  包含生成的软件包（RPM、DEB或 IPK）的目录，是构造镜像或 SDK 的子过程，通过构建系统生成。 这些源头可以通过web 服务器拷贝和共享，或者其他途径来提高扩展性或在运行时更新已有的镜像，如果运行时软件包管理是使能的。
 
 *   _Images:_  Images produced by the development process.
+*   _Images:_  开发过程产生的镜像。
 
 *   _Application Development SDK:_  Cross-development tools that are produced along with an image or separately with BitBake.
+*   _Application Development SDK:_  BitBake 生成的、和镜像一起的或单独的交叉编译工具。
 
-### 3.1. User Configuration[¶][817]
+### 3.1. 用户配置[¶][817]
 
 User configuration helps define the build. Through user configuration, you can tell BitBake the target architecture for which you are building the image, where to store downloaded source, and other build properties.
+用户配置帮助定义构建过程。通过用户配置，你可以告诉 BitBake 你构建的镜像是什么架构，在哪里保存下载的源码，以及其他属性。
 
 The following figure shows an expanded representation of the "User Configuration" box of the [general Yocto Project Development Environment figure][4176]:
+下面的表格展示了一个[通用 Yocto 项目开发环境表格][4176]的展开的表现用户配置的盒子。
 
 ![](https://www.yoctoproject.org/docs/current/ref-manual/figures/user-configuration.png)
 
 BitBake needs some basic configuration files in order to complete a build. These files are `*.conf` files. The minimally necessary ones reside as example files in the [Source Directory][4177]. For simplicity, this section refers to the Source Directory as the "Poky Directory."
+BitBake 需要一些基本的配置文件来完成构建。这些文件是 `*.conf`。最少需要的文件是位于 [Source Directory][4177] 作为例子的文件。简单来说，这部分 Source Directory 被称为 "Poky Directory" 。
 
 When you clone the `poky` Git repository or you download and unpack a Yocto Project release, you can set up the Source Directory to be named anything you want. For this discussion, the cloned repository uses the default name `poky`.
 
