@@ -1397,58 +1397,81 @@ BitBake needs some basic configuration files in order to complete a build. These
 BitBake 需要一些基本的配置文件来完成构建。这些文件是 `*.conf`。最少需要的文件是位于 [Source Directory][4177] 作为例子的文件。简单来说，这部分 Source Directory 被称为 "Poky Directory" 。
 
 When you clone the `poky` Git repository or you download and unpack a Yocto Project release, you can set up the Source Directory to be named anything you want. For this discussion, the cloned repository uses the default name `poky`.
+当你克隆 `poky` git 仓库或者下载、解压缩 Yocto项目发布版之后，你可以设置 Source Directory为任何你想要的名字。为了讨论，接下来克隆的仓库会使用默认名字 `poky`。
 
 ### Note
 
 The Poky repository is primarily an aggregation of existing repositories. It is not a canonical upstream source.
+Poky 仓库是基本是一些存在的仓库的集合。它不是一个典型上游源。
 
 The `meta-poky` layer inside Poky contains a `conf` directory that has example configuration files. These example files are used as a basis for creating actual configuration files when you source the build environment script (i.e. [`oe-init-build-env`][4178] or [`oe-init-build-env-memres`][4179]).
+在 Poky 中的 `meta-poky` layer 包含一个 `conf` 目录有一些配置文件的例子。这些示例文件是当你执行构建环境脚本时创建实际配置文件的基础。（比如 `oe-init-build-env`][4178] 或者 [`oe-init-build-env-memres`][4179]）。
 
 Sourcing the build environment script creates a [Build Directory][4180] if one does not already exist. BitBake uses the Build Directory for all its work during builds. The Build Directory has a `conf` directory that contains default versions of your `local.conf` and `bblayers.conf` configuration files. These default configuration files are created only if versions do not already exist in the Build Directory at the time you source the build environment setup script.
+执行构建环境脚本时，如果 [Build Directory][4180] 不存在就会创建一个。BitBake 在整个构建工作过程中都使用 Build Directory。这个 Build Directory 有一个 `conf` 目录保存了你的默认版本的`local.conf` 和`bblayers.conf` 配置文件。如果你在执行构建环境脚本时， Build Directory 没有配置文件，就会创建这些默认的配置文件。
 
 Because the Poky repository is fundamentally an aggregation of existing repositories, some users might be familiar with running the `oe-init-build-env` or `oe-init-build-env-memres` script in the context of separate OpenEmbedded-Core and BitBake repositories rather than a single Poky repository. This discussion assumes the script is executed from within a cloned or unpacked version of Poky.
+因为 Poky 仓库根本上师一些现存仓库的聚集，有些用户可能会熟悉在分开的 OpenEmbedded-Core 和BitBake 仓库而不是单独的 Poky 仓库中运行 `oe-init-build-env` 或 `oe-init-build-env-memres` 脚本。下面的讨论假设脚本是在一个克隆的或者解压缩班的 Poky 中执行的。
 
 Depending on where the script is sourced, different sub-scripts are called to set up the Build Directory (Yocto or OpenEmbedded). Specifically, the script `scripts/oe-setup-builddir` inside the poky directory sets up the Build Directory and seeds the directory (if necessary) with configuration files appropriate for the Yocto Project development environment.
+根据脚本是在何处执行的，不同的子脚本会被调用来搭建 Build Directory（Yocto 或者 OpenEmbedded）。特别的，在 poky 目录中的脚本 `scripts/oe-setup-builddir` 配合适合 Yocto 项目开发环境的配置文件搭建 Build Directory 和 seed 目录（如果必要）。
 
 ### Note
 
 The `scripts/oe-setup-builddir` script uses the `$TEMPLATECONF` variable to determine which sample configuration files to locate.
+`scripts/oe-setup-builddir` 脚本使用变量 `$TEMPLATECONF` 来决定要定位那个示例配置文件。
 
 The `local.conf` file provides many basic variables that define a build environment. Here is a list of a few. To see the default configurations in a `local.conf` file created by the build environment script, see the `local.conf.sample` in the `meta-poky` layer:
+`local.conf` 文件提供了很多定义构建环境的基础变量。这里的列表是很少的一部分。要查看由构建环境脚本创建的 `local.conf` 文件中的默认配置，可以看 `meta-poky` layer 中的 `local.conf.sample`：
 
 *   _Parallelism Options:_  Controlled by the [`BB_NUMBER_THREADS`][1830], [`PARALLEL_MAKE`][1831], and [`BB_NUMBER_PARSE_THREADS`][1832] variables.
+*   _Parallelism Options:_  受变量 [`BB_NUMBER_THREADS`][1830], [`PARALLEL_MAKE`][1831], 和[`BB_NUMBER_PARSE_THREADS`][1832] 控制.
 
 *   _Target Machine Selection:_  Controlled by the [`MACHINE`][1833] variable.
+*   _Target Machine Selection:_  由变量 [`MACHINE`][1833] 控制.
 
 *   _Download Directory:_  Controlled by the [`DL_DIR`][1834] variable.
+*   _Download Directory:_  由变量 [`DL_DIR`][1834] 控制.
 
 *   _Shared State Directory:_  Controlled by the [`SSTATE_DIR`][1835] variable.
+*   _Shared State Directory:_  由变量 [`SSTATE_DIR`][1835] 控制.
 
 *   _Build Output:_  Controlled by the [`TMPDIR`][1836] variable.
+*   _Build Output:_  由变量 [`TMPDIR`][1836] 控制.
 
 ### Note
 
 Configurations set in the `conf/local.conf` file can also be set in the `conf/site.conf` and `conf/auto.conf` configuration files.
+`conf/local.conf` 设置的配置也可以被设置在 `conf/site.conf` 和 `conf/auto.conf` 配置文件。
 
-The `bblayers.conf` file tells BitBake what layers you want considered during the build. By default, the layers listed in this file include layers minimally needed by the build system. However, you must manually add any custom layers you have created. You can find more information on working with the`bblayers.conf` file in the "[Enabling Your Layer][4181]" section in the Yocto Project Development Manual.
+The `bblayers.conf` file tells BitBake what layers you want considered during the build. By default, the layers listed in this file include layers minimally needed by the build system. However, you must manually add any custom layers you have created. You can find more information on working with the `bblayers.conf` file in the "[Enabling Your Layer][4181]" section in the Yocto Project Development Manual.
+`bblayers.conf` 配置文件告诉 BitBake 在构建过程中要关注那些 layer。默认情况下，在该文件列出的 layer 包含了构建系统需要的最少 layer。然而你必须手动添加任何你自己创建的自定义的 layer 。你可以通过配合 Yocto Project Development Manual 中 [Enabling Your Layer][4181]" 一节的 `bblayers.conf` 获取更多的信息。
 
 The files `site.conf` and `auto.conf` are not created by the environment initialization script. If you want the `site.conf` file, you need to create that yourself. The `auto.conf` file is typically created by an autobuilder:
+`site.conf` 和 `auto.conf` 不是由环境初始化脚本创建的。如果你想要 `site.conf` 配置文件，你需要自己创建它。 `auto.conf` 通常是由自动构建器（autobuilder）创建的：
 
 *   _`site.conf`:_  You can use the `conf/site.conf` configuration file to configure multiple build directories. For example, suppose you had several build environments and they shared some common features. You can set these default build properties here. A good example is perhaps the packaging format to use through the [`PACKAGE_CLASSES`][1837] variable.
+*   _`site.conf`:_  你可以使用配置文件 `conf/site.conf` 来配置多个构建目录。举个例子，假设你有几个构建环境，而且他们共享一些共同特性。你可以在这里设置这些默认构件属性。一个好例子可能是通过变量  [`PACKAGE_CLASSES`][1837]  设置打包格式。
 
     One useful scenario for using the `conf/site.conf` file is to extend your [`BBPATH`][1838] variable to include the path to a `conf/site.conf`. Then, when BitBake looks for Metadata using `BBPATH`, it finds the `conf/site.conf` file and applies your common configurations found in the file. To override configurations in a particular build directory, alter the similar configurations within that build directory's `conf/local.conf` file.
+    一个有用的场景是使用 `conf/site.conf` 文件扩展你的 [`BBPATH`][1838] 变量，以此来包含 `conf/site.conf` 的路径。然后，当 BitBake 使用 `BBPATH` 查找元数据时，它就会找到文件 `conf/site.conf`，并且应用在这个文件中找到的你的通用配置。要重载特定构建目录的配置，就修改这个构建目录下的 `conf/local.conf` 中相似的配置。
 
 *   _`auto.conf`:_  The file is usually created and written to by an autobuilder. The settings put into the file are typically the same as you would find in the `conf/local.conf` or the `conf/site.conf` files.
+*   _`auto.conf`:_ 这个文件经常是由一个自动构建器创建和写入的。文件中的设置通常和你在文件 `conf/local.conf` 或 `conf/site.conf` 中找到的一样。
 
 You can edit all configuration files to further define any particular build environment. This process is represented by the "User Configuration Edits" box in the figure.
+你可以修改所有的配置文件为以后定义特殊的构建环境。这个过程在表格中的 "User Configuration Edits" 框展示。
 
 When you launch your build with the `bitbake  _`target`_`  command, BitBake sorts out the configurations to ultimately define your build environment. It is important to understand that the OpenEmbedded build system reads the configuration files in a specific order: `site.conf`, `auto.conf`, and `local.conf`. And, the build system applies the normal assignment statement rules. Because the files are parsed in a specific order, variable assignments for the same variable could be affected. For example, if the `auto.conf` file and the `local.conf` set  _`variable1`_  to different values, because the build system parses `local.conf` after `auto.conf`,  _`variable1`_  is assigned the value from the `local.conf` file.
+当你通过 `bitbake  _`target`_` 命令启动你的构建后，BitBake 会对配置文件进行排序，一遍最后定义你的构建环境。理解 OpenEmbedded 构建系统按照特定顺序读取配置文件非常重要：`site.conf`, `auto.conf`, 和 `local.conf`。然后，构建系统会应用普通的赋值语句规则。因为这些文件会按照特定的顺序解析，对同一变量的赋值会受影响。举个例子，如果 `auto.conf` 和 `local.conf` 为变量 _`variable1`_ 赋了不同的值，因为构建系统在 `auto.conf` 之后处理 `local.conf` ，所以 _`variable1`_ 会被赋予了 `local.conf` 文件中的值。
 
-### 3.2. Metadata, Machine Configuration, and Policy Configuration[¶][818]
+### 3.2. 元数据，机器配置，以及策略配置[¶][818]
 
 The previous section described the user configurations that define BitBake's global behavior. This section takes a closer look at the layers the build system uses to further control the build. These layers provide Metadata for the software, machine, and policy.
+前面章节表述了定义 BitBake 的全局动作的用户配置。这一章节会近距离观察构建系统用来控制以后行为的 layer。这些 layer 为软件、机器和策略提供元数据。
 
 In general, three types of layer input exist:
+通常来说，存在三种类型的 layer 输入：
 
 *   _Policy Configuration:_  Distribution Layers provide top-level or general policies for the image or SDK being built. For example, this layer would dictate whether BitBake produces RPM or IPK packages.
 
