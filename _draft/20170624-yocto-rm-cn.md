@@ -1474,32 +1474,42 @@ In general, three types of layer input exist:
 通常来说，存在三种类型的 layer 输入：
 
 *   _Policy Configuration:_  Distribution Layers provide top-level or general policies for the image or SDK being built. For example, this layer would dictate whether BitBake produces RPM or IPK packages.
+*   _Policy Configuration:_ 分布的 layer提供构建镜像或者 SDK 的顶层或者通用策略。举个例子，这个 layer 将命令 BitBake 生成 RPM 或者 IPK 软件包。
 
 *   _Machine Configuration:_  Board Support Package (BSP) layers provide machine configurations. This type of information is specific to a particular target architecture.
+*   _Machine Configuration:_ BSP layer 提供机器配置。这类信息用来指定特定的目标架构。
 
 *   _Metadata:_  Software layers contain user-supplied recipe files, patches, and append files.
+*   _Metadata:_ 软件 layer 包含用户提供的 recipe 文件，补丁和 append 文件。
 
 The following figure shows an expanded representation of the Metadata, Machine Configuration, and Policy Configuration input (layers) boxes of the[general Yocto Project Development Environment figure][4182]:
+[general Yocto Project Development Environment figure][4182]，下面的表格展示了一个扩展的表示元数据，机器配置和策略配置的输入（layer）框
 
-| 
+
 ![](https://www.yoctoproject.org/docs/current/ref-manual/figures/layer-input.png)
- |
+
 
 In general, all layers have a similar structure. They all contain a licensing file (e.g. `COPYING`) if the layer is to be distributed, a `README` file as good practice and especially if the layer is to be distributed, a configuration directory, and recipe directories.
+通常情况下全部的 layer 有类似的结构。他们全部，如果要发布就包含了版权文件（比如 `COPYING`），作为一个好习惯会有一个 `README` 文件，特别是如果这个 layer 要分发，还会有一个配置目录和和 recipe 目录。
 
 The Yocto Project has many layers that can be used. You can see a web-interface listing of them on the [Source Repositories][4183] page. The layers are shown at the bottom categorized under "Yocto Metadata Layers." These layers are fundamentally a subset of the [OpenEmbedded Metadata Index][4184], which lists all layers provided by the OpenEmbedded community.
+Yocto 项目有很多 layer 可以使用。在 [Source Repositories][4183] 页，你可以看到一个 web 接口列出他们。这些 layer 分类显示在 "Yocto Metadata Layers" 底部。这些 layer 根本上是 [OpenEmbedded Metadata Index][4184] 的一个子集，OpenEmbedded Metadata Index 列出了 OpenEmbedded 社区提供的全部 layer。
 
 ### Note
 
 Layers exist in the Yocto Project Source Repositories that cannot be found in the OpenEmbedded Metadata Index. These layers are either deprecated or experimental in nature.
+在 Yocto 项目原仓库中存在 layer 不会在 OpenEmbedded Metadata Index 中找到。这些 layer 本质上是弃用的的和具有实验性质的。
 
 BitBake uses the `conf/bblayers.conf` file, which is part of the user configuration, to find what layers it should be using as part of the build.
+BitBake 使用 `conf/bblayers.conf` 文件，是用户配置文件的一部分，来查找那些 layer 应该作为构建的一部分使用。
 
 For more information on layers, see the "[Understanding and Creating Layers][4185]" section in the Yocto Project Development Manual.
+更多关于 layer 的信息参见 Yocto Project Development Manual 的 "[Understanding and Creating Layers][4185]" 章节。
 
-### 3.2.1. Distro Layer[¶][432]
+### 3.2.1. 发行 layer[¶][432]
 
 The distribution layer provides policy configurations for your distribution. Best practices dictate that you isolate these types of configurations into their own layer. Settings you provide in `conf/distro/ _`distro`_ .conf` override similar settings that BitBake finds in your `conf/local.conf` file in the Build Directory.
+分配的 layer 为你的分配版提供策略配置。最好的实践指示，
 
 The following list provides some explanation and references for what you typically find in the distribution layer:
 
