@@ -1506,54 +1506,72 @@ BitBake 使用 `conf/bblayers.conf` 文件，是用户配置文件的一部分�
 For more information on layers, see the "[Understanding and Creating Layers][4185]" section in the Yocto Project Development Manual.
 更多关于 layer 的信息参见 Yocto Project Development Manual 的 "[Understanding and Creating Layers][4185]" 章节。
 
-### 3.2.1. 发行 layer[¶][432]
+### 3.2.1. 分配 layer[¶][432]
 
 The distribution layer provides policy configurations for your distribution. Best practices dictate that you isolate these types of configurations into their own layer. Settings you provide in `conf/distro/ _`distro`_ .conf` override similar settings that BitBake finds in your `conf/local.conf` file in the Build Directory.
-分配的 layer 为你的分配版提供策略配置。最好的实践指示，
+分配的 layer 为你的分配版提供策略配置。最好的命令实践是你讲这些类型的配置文件划分为各自的 layer。你在 `conf/distro/ _`distro`_ .conf` 的设置会覆盖掉 BitBake 在 Build directory 中 `conf/local.conf` 找到的的相似的配置。
 
 The following list provides some explanation and references for what you typically find in the distribution layer:
+下面的列表提供了你通常能在分配 layer 中找到的解释和参考：
 
 *   _classes:_  Class files (`.bbclass`) hold common functionality that can be shared among recipes in the distribution. When your recipes inherit a class, they take on the settings and functions for that class. You can read more about class files in the "[Classes][819]" section.
+*   _classes:_	Class 文件（`.bbclass`）控制了在分配的 recipe 中可以共享使用的通用功能。当你的 recipe 继承了一个 class，它们会呈现这个 class 的设置和功能。你可以在 "[Classes][819]" 一节读到更多关于 class 文件的信息。
+
 
 *   _conf:_  This area holds configuration files for the layer (`conf/layer.conf`), the distribution (`conf/distro/ _`distro`_ .conf`), and any distribution-wide include files.
+*	_conf:_	 这部分控制了 layer（`conf/layer.conf`）的配置文件，distribution（`conf/distro _`distro`_ .conf`），和 distribution	范围内包含的文件。
 
 *   _recipes-*:_  Recipes and append files that affect common functionality across the distribution. This area could include recipes and append files to add distribution-specific configuration, initialization scripts, custom image recipes, and so forth.
+*	_recipes-*：_	Recipe 和 append 文件会在整个 distribution 过程中影响通用功能。这部分能包含 recipe 和 append 文件来添加和 distribution 相关的配置，初始化脚本，自定义镜像 recipe，以及类似的。
 
 ### 3.2.2. BSP Layer[¶][433]
 
 The BSP Layer provides machine configurations. Everything in this layer is specific to the machine for which you are building the image or the SDK. A common structure or form is defined for BSP layers. You can learn more about this structure in the [Yocto Project Board Support Package (BSP) Developer's Guide][3771].
+BSP layer 提供机器配置。在该 layer 的所有东西都是用于你要构建的镜像和 SDK 的机器。为 BSP layer 定义了一个共同的结构体。你可以在 [Yocto Project Board Support Package (BSP) Developer's Guide][3771] 获取关于这个结构体更多的信息。
 
 ### Note
 
 In order for a BSP layer to be considered compliant with the Yocto Project, it must meet some structural requirements.
+为了确保一个 BSP layer 和 Yocto 项目匹配，它必须满足依稀结构要求。
 
 The BSP Layer's configuration directory contains configuration files for the machine (`conf/machine/ _`machine`_ .conf`) and, of course, the layer (`conf/layer.conf`).
+BSP layer 的配置目录包含机器配置文件（`conf/machine/ _`machine`_ .conf`），以及，当然了还有 layer 配置文件（`conf/layer.conf`）。
 
 The remainder of the layer is dedicated to specific recipes by function: `recipes-bsp`, `recipes-core`, `recipes-graphics`, and `recipes-kernel`. Metadata can exist for multiple formfactors, graphics support systems, and so forth.
+剩下的 layer 是专门根据 recpie 功能的：`recipes-bsp`, `recipes-core`, `recipes-graphics`, 和 `recipes-kernel`。元数据存在于多个芯片封装，图形支持系统，以及类似的。
 
 ### Note
 
 While the figure shows several `recipes-*` directories, not all these directories appear in all BSP layers.
+虽然表格展示了几个 `recipes-*` 目录，但是并不是全部的目录都存在与 BSP layer。
 
-### 3.2.3. Software Layer[¶][434]
+### 3.2.3. 软件 Layer[¶][434]
 
 The software layer provides the Metadata for additional software packages used during the build. This layer does not include Metadata that is specific to the distribution or the machine, which are found in their respective layers.
+软件 layer 提供了构建过程中额外软件包的元数据。这个 layer 不包含和 distribution 或及其相关的元数据，这些都可以在他们对应的 layer 找到。
 
 This layer contains any new recipes that your project needs in the form of recipe files.
+这个 layer 以 recipe 文件格式提供了你的工程需要的所有新的 recipe。
 
-### 3.3. Sources[¶][820]
+### 3.3. 源[¶][820]
 
 In order for the OpenEmbedded build system to create an image or any target, it must be able to access source files. The [general Yocto Project Development Environment figure][4186] represents source files using the "Upstream Project Releases", "Local Projects", and "SCMs (optional)" boxes. The figure represents mirrors, which also play a role in locating source files, with the "Source Mirror(s)" box.
+为了让 OpenEmbedded 构建系统创建镜像或者任何目标，必须保证能够访问源文件。[general Yocto Project Development Environment figure][4186] 使用 “上游项目发布”，“本地项目”，和 “SCM（可选）”框展示了源文件。这个表格使用 “源镜像”框展示了参与定位源文件的镜像。
 
 The method by which source files are ultimately organized is a function of the project. For example, for released software, projects tend to use tarballs or other archived files that can capture the state of a release guaranteeing that it is statically represented. On the other hand, for a project that is more dynamic or experimental in nature, a project might keep source files in a repository controlled by a Source Control Manager (SCM) such as Git. Pulling source from a repository allows you to control the point in the repository (the revision) from which you want to build software. Finally, a combination of the two might exist, which would give the consumer a choice when deciding where to get source files.
+对源文件最根本的组织方法是按照项目的功能。举个例子，对于发布的软件，项目趋向于使用 tar 包或者其他可以捕获发布状态的压缩包，这样能保证它是静态展示的。另一方面，对于本质上更动态或者实验性质的项目，一个项目可能会使用源码管理器（SCM）的仓库来保存源文件，比如 git。从仓库拉取代码可能保证你控制你想要构建的软件的仓库版本。最后，这两种的组合也可能存在，这会让用户选择从哪里获取源代码。
 
 BitBake uses the [`SRC_URI`][4187] variable to point to source files regardless of their location. Each recipe must have a `SRC_URI` variable that points to the source.
+BitBake 使用变量 [`SRC_URI`][4187] 指向源文件而忽视他们的位置。每个 recipe 必须有一个 `SRC_URI` 变量指向源代码。
 
 Another area that plays a significant role in where source files come from is pointed to by the [`DL_DIR`][4188] variable. This area is a cache that can hold previously downloaded source. You can also instruct the OpenEmbedded build system to create tarballs from Git repositories, which is not the default behavior, and store them in the `DL_DIR` by using the [`BB_GENERATE_MIRROR_TARBALLS`][4189] variable.
+另一个在源文件中起重要角色的区域是由 [`DL_DIR`][4188]指向的。这个区域是之前下载下来的源代码的缓存。你可以命令 OpenEmbedded 构建系统从 Git 仓库创建压缩包，这并不是默认行为，然后通过变量 [`BB_GENERATE_MIRROR_TARBALLS`][4189] 把它们保存到 `DL_DIR` 目录。
 
 Judicious use of a `DL_DIR` directory can save the build system a trip across the Internet when looking for files. A good method for using a download directory is to have `DL_DIR` point to an area outside of your Build Directory. Doing so allows you to safely delete the Build Directory if needed without fear of removing any downloaded source file.
+明智的使用 `DL_DIR` 目录可以减少构建系统从网上搜寻文件的时间。使用下载目录的好行为是将 `DL_DIR` 指向 Build Directory 之外的区域。这样做可以让你安全地删除 Build Directory 而不需要害怕删除了已经下载了的源文件。
 
 The remainder of this section provides a deeper look into the source files and the mirrors. Here is a more detailed look at the source file area of the base figure:
+剩下的章节会深入观察源文件和镜像。这里是一个更详细基础表格的源码文件区域：
 
 | 
 ![](https://www.yoctoproject.org/docs/current/ref-manual/figures/source-input.png)
@@ -2569,19 +2587,6 @@ Specifying audio and video plug-ins as part of the `COMMERCIAL_AUDIO_PLUGINS` 
 
 ### Chapter 5. Yocto Project Releases and the Stable Release Process[¶][1877]
 
-**Table of Contents**
-
-<dl style="padding: 0em; margin: 0em 0em 0.5em;">
-
-<dt style="margin: 0em; padding: 0em;">[5.1\. Major and Minor Release Cadence][3478]</dt>
-
-<dt style="margin: 0em; padding: 0em;">[5.2\. Major Release Codenames][3479]</dt>
-
-<dt style="margin: 0em; padding: 0em;">[5.3\. Stable Release Process][3480]</dt>
-
-<dt style="margin: 0em; padding: 0em;">[5.4\. Testing and Quality Assurance][3481]</dt>
-
-</dl>
 
 The Yocto Project release process is predictable and consists of both major and minor (point) releases. This brief chapter provides information on how releases are named, their life cycle, and their stability.
 
