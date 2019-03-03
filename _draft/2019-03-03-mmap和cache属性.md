@@ -10,7 +10,7 @@ MAP_SHARED 和 MAP_PRIVATE 对 mmap 的内存的 cache 属性的影响
 
 mmap 作为系统调用，其实现分为两部分：libc 库的接口，和 Linux Kernel 的实际操作。
 
-1. 接口实现，以 musl(`v1.1.9`) 作为 libc 库为例。其接口函数定义如下：
+1. 接口实现，以 musl(`v1.1.21`) 作为 libc 库为例。其接口函数定义如下：
 
 `src/mman/mmap.c`:
 
@@ -104,6 +104,10 @@ static inline long __syscall6(long n, long a, long b, long c, long d, long e, lo
 2. 系统调用在 kernel 的实现
 
 通过 `svc` 切换到内核态后，kernel 开始检查传入的参数，选择对应的系统调用。
+
+`arch/arm/tools/syscall.tbl`
+
+oabi,eabi 区别？
 
 ``
 ```
